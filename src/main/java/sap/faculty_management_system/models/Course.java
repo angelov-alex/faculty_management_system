@@ -7,27 +7,35 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="COURSE")
+@Table(name = "COURSE")
 public class Course {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     @Column(name = "NAME")
     private String name;
 
-    @Column(name = "COURSE_LEADER")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "TEACHER_ID")
     private Teacher courseLeader;
 
-    @Column(name = "CREDIT")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "CREDIT_ID")
     private Credit credit;
 
-    private List<Student> enrolledStudents;
+    @ManyToMany
+    @JoinTable(
+            name = "COURSE_STUDENT",
+            joinColumns = @JoinColumn(name = "COURSE_ID"),
+            inverseJoinColumns = @JoinColumn(name = "STUDENT_ID"))
+    private Set<Student> enrolledStudents;
 
 }

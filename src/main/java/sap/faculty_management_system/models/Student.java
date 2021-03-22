@@ -6,14 +6,33 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import sap.faculty_management_system.models.enums.Semester;
 
-import java.util.List;
+import javax.persistence.*;
+import java.util.Set;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Student extends User {
+@Entity
+@Table(name = "STUDENT")
+public class Student {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
+
+    @Column(name = "NAME")
+    private String name;
+
+    @Column(name = "SEMESTER")
+    @Enumerated(EnumType.STRING)
     private Semester semester;
-    private List<Course> enrollments;
+
+    @ManyToMany
+    @JoinTable(
+            name = "COURSE_STUDENT",
+            joinColumns = @JoinColumn(name = "STUDENT_ID"),
+            inverseJoinColumns = @JoinColumn(name = "COURSE_ID"))
+    private Set<Course> enrollments;
 
 }

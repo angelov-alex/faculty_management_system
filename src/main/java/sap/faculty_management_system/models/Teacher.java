@@ -6,13 +6,31 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import sap.faculty_management_system.models.enums.Rank;
 
-import java.util.List;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Teacher extends User{
+@Entity
+@Table(name = "TEACHER")
+public class Teacher {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
+
+    @NotNull
+    @Column(name = "NAME")
+    private String name;
+
+    @Column(name = "RANK")
+    @Enumerated(EnumType.STRING)
     private Rank rank;
-    private List<Course> leadCourses;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "TEACHER_ID")
+    private Set<Course> leadCourses;
 }
