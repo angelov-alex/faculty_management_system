@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -38,4 +37,23 @@ public class Course {
             inverseJoinColumns = @JoinColumn(name = "STUDENT_ID"))
     private Set<Student> enrolledStudents;
 
+    public long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Teacher getCourseLeader() {
+        return courseLeader;
+    }
+
+    public Credit getCredit() {
+        return credit;
+    }
+
+    public Set<Student> getEnrolledStudents() {
+        return enrolledStudents;
+    }
 }
