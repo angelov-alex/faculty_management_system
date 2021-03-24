@@ -1,11 +1,8 @@
-package sap.faculty_management_system.models;
+package sap.faculty_management_system.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import sap.faculty_management_system.models.enums.Rank;
+import sap.faculty_management_system.model.enums.Rank;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;

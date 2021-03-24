@@ -1,8 +1,8 @@
-package sap.faculty_management_system.models;
+package sap.faculty_management_system.model;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import sap.faculty_management_system.models.enums.Semester;
+import sap.faculty_management_system.model.enums.Semester;
 
 import javax.persistence.*;
 import java.util.Set;

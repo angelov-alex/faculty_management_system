@@ -1,4 +1,4 @@
-package sap.faculty_management_system.models;
+package sap.faculty_management_system.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,13 +1,12 @@
-package sap.faculty_management_system.services;
+package sap.faculty_management_system.service;
 
 import org.springframework.stereotype.Service;
-import sap.faculty_management_system.dtos.CourseDTO;
-import sap.faculty_management_system.repositories.CourseRepository;
+import sap.faculty_management_system.dto.CourseDTO;
+import sap.faculty_management_system.repository.CourseRepository;
+import sap.faculty_management_system.util.DTOConverter;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static sap.faculty_management_system.util.DTOConverter.convertCourseToDTO;
 
 @Service
 public class CourseServiceImpl implements CourseService {
@@ -21,6 +20,6 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public List<CourseDTO> getAll() {
         return repository.findAll().stream()
-                .map(a -> convertCourseToDTO(a)).collect(Collectors.toList());
+                .map(DTOConverter::convertCourseToDTO).collect(Collectors.toList());
     }
 }

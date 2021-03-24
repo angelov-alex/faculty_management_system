@@ -1,8 +1,8 @@
-package sap.faculty_management_system.dtos;
+package sap.faculty_management_system.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import sap.faculty_management_system.models.Credit;
+import sap.faculty_management_system.model.Credit;
 
 @NoArgsConstructor
 @AllArgsConstructor

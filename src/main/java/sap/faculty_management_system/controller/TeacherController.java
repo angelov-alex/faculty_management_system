@@ -1,12 +1,12 @@
-package sap.faculty_management_system.controllers;
+package sap.faculty_management_system.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import sap.faculty_management_system.dtos.TeacherDTO;
-import sap.faculty_management_system.services.TeacherService;
+import sap.faculty_management_system.dto.TeacherDTO;
+import sap.faculty_management_system.service.TeacherService;
 
 import java.util.List;
 

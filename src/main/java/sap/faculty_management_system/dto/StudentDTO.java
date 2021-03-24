@@ -1,10 +1,7 @@
-package sap.faculty_management_system.dtos;
+package sap.faculty_management_system.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import sap.faculty_management_system.models.Course;
-import sap.faculty_management_system.models.enums.Semester;
 
 import java.util.Set;
 

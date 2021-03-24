@@ -1,4 +1,4 @@
-package sap.faculty_management_system.models.enums;
+package sap.faculty_management_system.model.enums;
 
 public enum Semester {
     ONE(1),
@@ -7,7 +7,7 @@ public enum Semester {
     FOUR(4),
     ;
 
-    private int value;
+    private final int value;
 
     Semester(int value) {
         this.value = value;

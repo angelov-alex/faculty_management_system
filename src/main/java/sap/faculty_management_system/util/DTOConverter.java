@@ -1,12 +1,12 @@
 package sap.faculty_management_system.util;
 
 import org.springframework.util.ObjectUtils;
-import sap.faculty_management_system.dtos.CourseDTO;
-import sap.faculty_management_system.dtos.StudentDTO;
-import sap.faculty_management_system.dtos.TeacherDTO;
-import sap.faculty_management_system.models.Course;
-import sap.faculty_management_system.models.Student;
-import sap.faculty_management_system.models.Teacher;
+import sap.faculty_management_system.dto.CourseDTO;
+import sap.faculty_management_system.dto.StudentDTO;
+import sap.faculty_management_system.dto.TeacherDTO;
+import sap.faculty_management_system.model.Course;
+import sap.faculty_management_system.model.Student;
+import sap.faculty_management_system.model.Teacher;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -36,7 +36,7 @@ public class DTOConverter {
 
         teacherDTO.setName(teacher.getName());
         teacherDTO.setId(teacher.getId());
-        teacherDTO.setLeadCourses(teacher.getLeadCourses().stream().map(a -> convertCourseToDTO(a)).collect(Collectors.toSet()));
+        teacherDTO.setLeadCourses(teacher.getLeadCourses().stream().map(DTOConverter::convertCourseToDTO).collect(Collectors.toSet()));
         teacherDTO.setRank(teacher.getRank());
         teacherDTO.setTotalNumOfLeadCourses(teacher.getLeadCourses().size());
 
@@ -61,7 +61,7 @@ public class DTOConverter {
         studentDTO.setName(student.getName());
         studentDTO.setId(student.getId());
         studentDTO.setSemester(student.getSemester().getValue());
-        studentDTO.setEnrollments(student.getEnrollments().stream().map(c -> convertCourseToDTO(c)).collect(Collectors.toSet()));
+        studentDTO.setEnrollments(student.getEnrollments().stream().map(DTOConverter::convertCourseToDTO).collect(Collectors.toSet()));
 
         Set<Course> enrollments = student.getEnrollments();
         double totalCredits = 0.0;
