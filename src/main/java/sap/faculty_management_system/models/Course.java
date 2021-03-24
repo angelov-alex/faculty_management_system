@@ -22,17 +22,17 @@ public class Course {
     @Column(name = "NAME")
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "TEACHER_ID")
     private Teacher courseLeader;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "CREDIT_ID")
     private Credit credit;
 
     @ManyToMany
     @JoinTable(
-            name = "COURSE_STUDENT",
+            name = "STUDENT_COURSE",
             joinColumns = @JoinColumn(name = "COURSE_ID"),
             inverseJoinColumns = @JoinColumn(name = "STUDENT_ID"))
     private Set<Student> enrolledStudents;
@@ -41,19 +41,39 @@ public class Course {
         return id;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Teacher getCourseLeader() {
         return courseLeader;
     }
 
+    public void setCourseLeader(Teacher courseLeader) {
+        this.courseLeader = courseLeader;
+    }
+
     public Credit getCredit() {
         return credit;
     }
 
+    public void setCredit(Credit credit) {
+        this.credit = credit;
+    }
+
     public Set<Student> getEnrolledStudents() {
         return enrolledStudents;
+    }
+
+    public void setEnrolledStudents(Set<Student> enrolledStudents) {
+        this.enrolledStudents = enrolledStudents;
     }
 }

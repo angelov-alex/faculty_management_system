@@ -1,5 +1,6 @@
 package sap.faculty_management_system.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,8 +11,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
 
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -31,6 +30,39 @@ public class Teacher {
     private Rank rank;
 
     @OneToMany(cascade = CascadeType.ALL)
+
     @JoinColumn(name = "TEACHER_ID")
     private Set<Course> leadCourses;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Rank getRank() {
+        return rank;
+    }
+
+    public void setRank(Rank rank) {
+        this.rank = rank;
+    }
+
+    public Set<Course> getLeadCourses() {
+        return leadCourses;
+    }
+
+    public void setLeadCourses(Set<Course> leadCourses) {
+        this.leadCourses = leadCourses;
+    }
 }

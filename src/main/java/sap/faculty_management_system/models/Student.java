@@ -1,16 +1,12 @@
 package sap.faculty_management_system.models;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import sap.faculty_management_system.models.enums.Semester;
 
 import javax.persistence.*;
 import java.util.Set;
 
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -30,9 +26,40 @@ public class Student {
 
     @ManyToMany
     @JoinTable(
-            name = "COURSE_STUDENT",
+            name = "STUDENT_COURSE",
             joinColumns = @JoinColumn(name = "STUDENT_ID"),
             inverseJoinColumns = @JoinColumn(name = "COURSE_ID"))
     private Set<Course> enrollments;
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Semester getSemester() {
+        return semester;
+    }
+
+    public void setSemester(Semester semester) {
+        this.semester = semester;
+    }
+
+    public Set<Course> getEnrollments() {
+        return enrollments;
+    }
+
+    public void setEnrollments(Set<Course> enrollments) {
+        this.enrollments = enrollments;
+    }
 }

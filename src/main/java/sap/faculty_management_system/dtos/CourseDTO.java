@@ -1,17 +1,9 @@
 package sap.faculty_management_system.dtos;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import sap.faculty_management_system.models.Credit;
-import sap.faculty_management_system.models.Student;
-import sap.faculty_management_system.models.Teacher;
 
-import java.util.Set;
-
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class CourseDTO {
@@ -20,10 +12,39 @@ public class CourseDTO {
 
     private String name;
 
-    private Teacher courseLeader;
-
     private Credit credit;
 
     private int totalEnrollments;
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Credit getCredit() {
+        return credit;
+    }
+
+    public void setCredit(Credit credit) {
+        this.credit = credit;
+    }
+
+    public int getTotalEnrollments() {
+        return totalEnrollments;
+    }
+
+    public void setTotalEnrollments(int totalEnrollments) {
+        this.totalEnrollments = totalEnrollments;
+    }
 }

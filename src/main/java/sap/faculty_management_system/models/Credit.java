@@ -21,4 +21,20 @@ public class Credit {
 
     @Column(name = "CREDIT_HOURS")
     private double creditHours;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public double getCreditHours() {
+        return creditHours;
+    }
+
+    public void setCreditHours(double creditHours) {
+        this.creditHours = creditHours;
+    }
 }

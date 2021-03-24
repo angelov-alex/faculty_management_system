@@ -1,12 +1,13 @@
 package sap.faculty_management_system.services;
 
 import org.springframework.stereotype.Service;
-import sap.faculty_management_system.models.Course;
 import sap.faculty_management_system.dtos.CourseDTO;
 import sap.faculty_management_system.repositories.CourseRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static sap.faculty_management_system.util.DTOConverter.convertCourseToDTO;
 
 @Service
 public class CourseServiceImpl implements CourseService {
@@ -20,17 +21,6 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public List<CourseDTO> getAll() {
         return repository.findAll().stream()
-                .map(this::convertToDTO).collect(Collectors.toList());
-    }
-
-    private CourseDTO convertToDTO(Course course) {
-        CourseDTO courseDTO = new CourseDTO();
-
-        courseDTO.setId(course.getId());
-        courseDTO.setName(course.getName());
-        courseDTO.setCourseLeader(course.getCourseLeader());
-        courseDTO.setCredit(course.getCredit());
-        courseDTO.setEnrolledStudents(course.getEnrolledStudents());
-        return courseDTO;
+                .map(a -> convertCourseToDTO(a)).collect(Collectors.toList());
     }
 }
