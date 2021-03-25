@@ -2,40 +2,41 @@ package sap.faculty_management_system.model;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import sap.faculty_management_system.model.enums.Semester;
+import sap.faculty_management_system.model.enums.AcademicYear;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "STUDENT")
+@Table(name = "STUDENT", schema = "SAP")
 public class Student {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private long id;
 
     @Column(name = "NAME")
     private String name;
 
-    @Column(name = "SEMESTER")
+    @Column(name = "ACADEMIC_YEAR")
     @Enumerated(EnumType.STRING)
-    private Semester semester;
+    private AcademicYear academicYear;
 
     @ManyToMany
     @JoinTable(
-            name = "STUDENT_COURSE",
+            name = "STUDENT_COURSE", schema = "SAP",
             joinColumns = @JoinColumn(name = "STUDENT_ID"),
             inverseJoinColumns = @JoinColumn(name = "COURSE_ID"))
-    private Set<Course> enrollments;
+    private List<Course> enrollments = new ArrayList<>();
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -47,19 +48,23 @@ public class Student {
         this.name = name;
     }
 
-    public Semester getSemester() {
-        return semester;
+    public AcademicYear getAcademicYear() {
+        return academicYear;
     }
 
-    public void setSemester(Semester semester) {
-        this.semester = semester;
+    public void setAcademicYear(AcademicYear academicYear) {
+        this.academicYear = academicYear;
     }
 
-    public Set<Course> getEnrollments() {
+    public List<Course> getEnrollments() {
         return enrollments;
     }
 
-    public void setEnrollments(Set<Course> enrollments) {
+    public void setEnrollments(List<Course> enrollments) {
         this.enrollments = enrollments;
+    }
+
+    public void addCourse(Course course) {
+        this.enrollments.add(course);
     }
 }

@@ -13,7 +13,7 @@ public class StudentDTO {
 
     private String name;
 
-    private int semester;
+    private int academicYear;
 
     private Set<CourseDTO> enrollments;
 
@@ -35,12 +35,12 @@ public class StudentDTO {
         this.name = name;
     }
 
-    public int getSemester() {
-        return semester;
+    public int getAcademicYear() {
+        return academicYear;
     }
 
-    public void setSemester(int semester) {
-        this.semester = semester;
+    public void setAcademicYear(int academicYear) {
+        this.academicYear = academicYear;
     }
 
     public Set<CourseDTO> getEnrollments() {

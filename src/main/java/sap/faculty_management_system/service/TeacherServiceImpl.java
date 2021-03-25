@@ -32,9 +32,9 @@ public class TeacherServiceImpl implements TeacherService {
     private static class SortTeachersByNumOfStudents implements Comparator<TeacherDTO> {
         @Override
         public int compare(TeacherDTO o1, TeacherDTO o2) {
-            if (o1.getTotalNumOfStudents() == o2.getTotalNumOfStudents()) {
-                return 0;
-            }
+//            if (o1.getTotalNumOfStudents() == o2.getTotalNumOfStudents()) {
+//                return 0;
+//            }
             return o1.getTotalNumOfStudents() > o2.getTotalNumOfStudents() ? -1 : 1;
         }
     }

@@ -8,7 +8,7 @@ import sap.faculty_management_system.model.Course;
 import sap.faculty_management_system.model.Student;
 import sap.faculty_management_system.model.Teacher;
 
-import java.util.Set;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class DTOConverter {
@@ -40,7 +40,7 @@ public class DTOConverter {
         teacherDTO.setRank(teacher.getRank());
         teacherDTO.setTotalNumOfLeadCourses(teacher.getLeadCourses().size());
 
-        Set<Course> leadCourses = teacher.getLeadCourses();
+        List<Course> leadCourses = teacher.getLeadCourses();
         int totalStudents = 0;
 
         for (Course course : leadCourses) {
@@ -60,10 +60,10 @@ public class DTOConverter {
 
         studentDTO.setName(student.getName());
         studentDTO.setId(student.getId());
-        studentDTO.setSemester(student.getSemester().getValue());
+        studentDTO.setAcademicYear(student.getAcademicYear().getValue());
         studentDTO.setEnrollments(student.getEnrollments().stream().map(DTOConverter::convertCourseToDTO).collect(Collectors.toSet()));
 
-        Set<Course> enrollments = student.getEnrollments();
+        List<Course> enrollments = student.getEnrollments();
         double totalCredits = 0.0;
 
         for (Course course : enrollments) {

@@ -6,14 +6,15 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "COURSE")
+@Table(name = "COURSE", schema = "SAP")
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -32,10 +33,10 @@ public class Course {
 
     @ManyToMany
     @JoinTable(
-            name = "STUDENT_COURSE",
+            name = "STUDENT_COURSE", schema = "SAP",
             joinColumns = @JoinColumn(name = "COURSE_ID"),
             inverseJoinColumns = @JoinColumn(name = "STUDENT_ID"))
-    private Set<Student> enrolledStudents;
+    private List<Student> enrolledStudents = new ArrayList<>();
 
     public long getId() {
         return id;
@@ -69,11 +70,11 @@ public class Course {
         this.credit = credit;
     }
 
-    public Set<Student> getEnrolledStudents() {
+    public List<Student> getEnrolledStudents() {
         return enrolledStudents;
     }
 
-    public void setEnrolledStudents(Set<Student> enrolledStudents) {
+    public void setEnrolledStudents(List<Student> enrolledStudents) {
         this.enrolledStudents = enrolledStudents;
     }
 }
