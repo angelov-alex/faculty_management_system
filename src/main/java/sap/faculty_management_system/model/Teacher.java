@@ -2,6 +2,7 @@ package sap.faculty_management_system.model;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 import sap.faculty_management_system.model.enums.Rank;
 
 import javax.persistence.*;
@@ -16,8 +17,10 @@ import java.util.List;
 public class Teacher {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid")
+    @Column(name = "UUID", unique = true)
+    private String id;
 
     @NotNull
     @Column(name = "NAME")
@@ -29,14 +32,14 @@ public class Teacher {
 
     @OneToMany(cascade = CascadeType.ALL)
 
-    @JoinColumn(name = "TEACHER_ID")
+    @JoinColumn(name = "TEACHER_UUID")
     private List<Course> leadCourses = new ArrayList<>();
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

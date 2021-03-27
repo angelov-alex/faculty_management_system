@@ -8,7 +8,7 @@ import sap.faculty_management_system.model.Credit;
 @AllArgsConstructor
 public class CourseDTO {
 
-    private long id;
+    private String id;
 
     private String name;
 
@@ -16,11 +16,11 @@ public class CourseDTO {
 
     private int totalEnrollments;
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

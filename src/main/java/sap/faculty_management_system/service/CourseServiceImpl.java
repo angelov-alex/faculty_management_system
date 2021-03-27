@@ -6,6 +6,7 @@ import sap.faculty_management_system.model.Course;
 import sap.faculty_management_system.model.Student;
 import sap.faculty_management_system.repository.CourseRepository;
 import sap.faculty_management_system.repository.StudentRepository;
+import sap.faculty_management_system.request.EnrollmentRequest;
 import sap.faculty_management_system.response.EnrollmentResponse;
 import sap.faculty_management_system.util.DTOConverter;
 
@@ -39,18 +40,19 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public EnrollmentResponse enroll(Long courseId, Long studentId) {
-        Optional<Course> courseOptional = courseRepository.findById(courseId);
+    public EnrollmentResponse enroll(EnrollmentRequest request) {
+        Optional<Course> courseOptional = courseRepository.findById(request.getCourseId());
         if (!courseOptional.isPresent()) {
             return new EnrollmentResponse(false, "No such course found.");
         }
-        Optional<Student> studentOptional = studentRepository.findById(studentId);
+        Optional<Student> studentOptional = studentRepository.findById(request.getStudentId());
         if (!studentOptional.isPresent()) {
             return new EnrollmentResponse(false, "No such student found.");
         }
         //TODO: to check when already enrolled
+        List<Course> courseList = studentOptional.get().getEnrollments();
         boolean isCourseEnrolled = studentOptional.get().getEnrollments().stream()
-                .map(a -> a.getId() == courseId)
+                .map(a -> a.getId().equals(request.getCourseId()))
                 .findFirst()
                 .orElse(false);
         if (isCourseEnrolled) {

@@ -4,8 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,33 +18,37 @@ import java.util.List;
 @Entity
 @Table(name = "COURSE", schema = "SAP")
 public class Course {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
 
+    @Id
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid")
+    @Column(name = "UUID", unique = true)
+    private String id;
+
+    @NotNull
     @Column(name = "NAME")
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "TEACHER_ID")
+    @JoinColumn(name = "TEACHER_UUID")
     private Teacher courseLeader;
 
     @ManyToOne
-    @JoinColumn(name = "CREDIT_ID")
+    @JoinColumn(name = "CREDIT_UUID")
     private Credit credit;
 
     @ManyToMany
     @JoinTable(
             name = "STUDENT_COURSE", schema = "SAP",
-            joinColumns = @JoinColumn(name = "COURSE_ID"),
-            inverseJoinColumns = @JoinColumn(name = "STUDENT_ID"))
+            joinColumns = @JoinColumn(name = "COURSE_UUID"),
+            inverseJoinColumns = @JoinColumn(name = "STUDENT_UUID"))
     private List<Student> enrolledStudents = new ArrayList<>();
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

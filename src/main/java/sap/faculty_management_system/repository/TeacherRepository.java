@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import sap.faculty_management_system.model.Teacher;
 
 @Repository
-public interface TeacherRepository extends JpaRepository<Teacher, Long> {
+public interface TeacherRepository extends JpaRepository<Teacher, String> {
 }

@@ -5,6 +5,6 @@ import org.springframework.stereotype.Repository;
 import sap.faculty_management_system.model.Student;
 
 @Repository
-public interface StudentRepository extends JpaRepository<Student, Long> {
+public interface StudentRepository extends JpaRepository<Student, String> {
 
 }

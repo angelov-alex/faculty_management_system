@@ -2,9 +2,11 @@ package sap.faculty_management_system.model;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 import sap.faculty_management_system.model.enums.AcademicYear;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,9 +17,12 @@ import java.util.List;
 public class Student {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid")
+    @Column(name = "UUID", unique = true)
+    private String id;
 
+    @NotNull
     @Column(name = "NAME")
     private String name;
 
@@ -28,15 +33,15 @@ public class Student {
     @ManyToMany
     @JoinTable(
             name = "STUDENT_COURSE", schema = "SAP",
-            joinColumns = @JoinColumn(name = "STUDENT_ID"),
-            inverseJoinColumns = @JoinColumn(name = "COURSE_ID"))
+            joinColumns = @JoinColumn(name = "STUDENT_UUID"),
+            inverseJoinColumns = @JoinColumn(name = "COURSE_UUID"))
     private List<Course> enrollments = new ArrayList<>();
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
