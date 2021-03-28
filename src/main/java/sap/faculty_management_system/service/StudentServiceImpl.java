@@ -29,13 +29,16 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public StudentResponse addStudent(StudentRequest request) {
         if (ObjectUtils.isEmpty(request) || request.getName() == null || request.getAcademicYear() == null || request.getName().isEmpty()) {
-            return new StudentResponse(false, "Missing input parameter/s.");
+            return new StudentResponse(false, "Missing input parameter/s. ");
         }
-
+        List<Student> existingStudentsByName = studentRepository.findAllByName(request.getName());
+        if (!existingStudentsByName.isEmpty()) {
+            return new StudentResponse(false, String.format("Student with name %s already exist. ", request.getName()));
+        }
         Student student = new Student();
         student.setName(request.getName());
         student.setAcademicYear(request.getAcademicYear());
         studentRepository.save(student);
-        return new StudentResponse(true, "Student was created successfully.");
+        return new StudentResponse(true, String.format("Student %s in academic year %s was created successfully. ", request.getName(), request.getAcademicYear()));
     }
 }

@@ -31,7 +31,6 @@ public class Teacher {
     private Rank rank;
 
     @OneToMany(cascade = CascadeType.ALL)
-
     @JoinColumn(name = "TEACHER_UUID")
     private List<Course> leadCourses = new ArrayList<>();
 

@@ -51,6 +51,10 @@ public class DTOConverter {
         return teacherDTO;
     }
 
+//    public static TeacherDTO2 convertTeacherReportToDTO(TeacherDTO teacherDTO) {
+//        return new TeacherDTO2(teacherDTO.getName(), teacherDTO.getRank(), teacherDTO.getTotalNumOfLeadCourses());
+//    }
+
     public static StudentDTO convertStudentToDTO(Student student) {
         if (ObjectUtils.isEmpty(student)) {
             return null;

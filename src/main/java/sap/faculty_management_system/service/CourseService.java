@@ -19,5 +19,7 @@ public interface CourseService {
 
     DelistResponse delist(DelistRequest request);
 
+    List<CourseDTO> getTopCourses();
+
     List<CourseDTO> getTopCourses(int number);
 }

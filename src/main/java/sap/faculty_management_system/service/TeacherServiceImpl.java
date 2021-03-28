@@ -27,6 +27,13 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
+    public List<TeacherDTO> getTopTeachers() {
+        List<TeacherDTO> teacherDTOList = teacherRepository.findAll().stream().map(DTOConverter::convertTeacherToDTO).collect(Collectors.toList());
+
+        return teacherDTOList.stream().sorted(new SortTeachersByNumOfStudents()).collect(Collectors.toList());
+    }
+
+    @Override
     public List<TeacherDTO> getTopTeachers(int number) {
         List<TeacherDTO> teacherDTOList = teacherRepository.findAll().stream().map(DTOConverter::convertTeacherToDTO).collect(Collectors.toList());
 
@@ -34,15 +41,20 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public TeacherResponse addTeacher(TeacherRequest request) {
+    public TeacherResponse addOrUpdateTeacher(TeacherRequest request) {
         if (ObjectUtils.isEmpty(request) || request.getName() == null || request.getRank() == null || request.getName().isEmpty()) {
             return new TeacherResponse(false, "Missing input parameter/s.");
+        }
+        //TODO: to make update teacher instead of error
+        List<Teacher> existingTeacherByName = teacherRepository.findAllByName(request.getName());
+        if (!existingTeacherByName.isEmpty()) {
+            return new TeacherResponse(false, String.format("Teacher with name %s already exist. ", request.getName()));
         }
         Teacher teacher = new Teacher();
         teacher.setName(request.getName());
         teacher.setRank(request.getRank());
         teacherRepository.save(teacher);
-        return new TeacherResponse(true, "Teacher was created successfully.");
+        return new TeacherResponse(true, String.format("Teacher %s with rank %s was created successfully.", request.getName(), request.getRank()));
     }
 
     private static class SortTeachersByNumOfStudents implements Comparator<TeacherDTO> {

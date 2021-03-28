@@ -1,5 +1,7 @@
 package sap.faculty_management_system.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -11,6 +13,7 @@ import sap.faculty_management_system.dto.StudentDTO;
 import sap.faculty_management_system.request.StudentRequest;
 import sap.faculty_management_system.response.StudentResponse;
 import sap.faculty_management_system.service.StudentService;
+import sap.faculty_management_system.util.Constants;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -18,6 +21,8 @@ import java.util.List;
 @Controller
 @RequestMapping("/api/students")
 public class StudentController {
+    private static final Logger LOGGER = LoggerFactory.getLogger(StudentController.class);
+
     private final StudentService service;
 
     public StudentController(StudentService service) {
@@ -25,18 +30,26 @@ public class StudentController {
     }
 
     @GetMapping
-    public ResponseEntity<List<StudentDTO>> getStudents() {
+    public ResponseEntity<List<StudentDTO>> getAllStudents() {
+        LOGGER.info(Constants.GETTING_ALL_STUDENTS);
         List<StudentDTO> result = service.getAll();
+        if (result.isEmpty()) {
+            LOGGER.error(Constants.GETTING_ALL_STUDENTS + Constants.NO_RECORDS_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        LOGGER.info(Constants.SUCCESS + Constants.GETTING_ALL_STUDENTS);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<StudentResponse> addStudent(@Valid @RequestBody StudentRequest request) {
-
+        LOGGER.info(Constants.REQUEST_TO_REGISTER_NEW_STUDENT);
         StudentResponse response = service.addStudent(request);
         if (!response.isCreated()) {
+            LOGGER.error(response.getMessage());
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
+        LOGGER.info(response.getMessage());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

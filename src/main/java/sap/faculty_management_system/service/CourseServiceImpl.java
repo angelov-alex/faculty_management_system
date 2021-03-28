@@ -32,7 +32,8 @@ public class CourseServiceImpl implements CourseService {
     private final TeacherRepository teacherRepository;
     private final CreditRepository creditRepository;
 
-    public CourseServiceImpl(CourseRepository courseRepository, StudentRepository studentRepository, TeacherRepository teacherRepository, CreditRepository creditRepository) {
+    public CourseServiceImpl(CourseRepository courseRepository, StudentRepository studentRepository
+            , TeacherRepository teacherRepository, CreditRepository creditRepository) {
         this.courseRepository = courseRepository;
         this.studentRepository = studentRepository;
         this.teacherRepository = teacherRepository;
@@ -46,8 +47,21 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    public List<CourseDTO> getTopCourses() {
+        List<CourseDTO> courseDTOList = courseRepository.findAll()
+                .stream()
+                .map(DTOConverter::convertCourseToDTO)
+                .collect(Collectors.toList());
+
+        return courseDTOList.stream().sorted(new SortCoursesByEnrollments()).collect(Collectors.toList());
+    }
+
+    @Override
     public List<CourseDTO> getTopCourses(int number) {
-        List<CourseDTO> courseDTOList = courseRepository.findAll().stream().map(DTOConverter::convertCourseToDTO).collect(Collectors.toList());
+        List<CourseDTO> courseDTOList = courseRepository.findAll()
+                .stream()
+                .map(DTOConverter::convertCourseToDTO)
+                .collect(Collectors.toList());
 
         return courseDTOList.stream().sorted(new SortCoursesByEnrollments()).limit(number).collect(Collectors.toList());
     }
@@ -70,22 +84,18 @@ public class CourseServiceImpl implements CourseService {
             return new EnrollmentResponse(false, "No such student found.");
         }
 
-        List<Course> courseList = studentOptional.get().getEnrollments();
-        boolean isCourseEnrolled = false;
-        for (Course a : courseList) {
-            if (a.getId().equals(request.getCourseId())) {
-                isCourseEnrolled = true;
-                break;
-            }
-        }
+        boolean isCourseEnrolled = isCourseEnrolled(request.getCourseId(), studentOptional);
+
         if (isCourseEnrolled) {
-            return new EnrollmentResponse(false, "Student is already enrolled in this course.");
+            return new EnrollmentResponse(false, String.format("Student %s is already enrolled in course %s."
+                    , studentOptional.get().getName(), courseOptional.get().getName()));
         }
         Student student = studentOptional.get();
         student.addCourse(courseOptional.get());
         studentRepository.save(student);
 
-        return new EnrollmentResponse(true, "Student is now enrolled in the course.");
+        return new EnrollmentResponse(true, String.format("Student %s is now enrolled in %s. "
+                , student.getName(), courseOptional.get().getName()));
     }
 
     @Override
@@ -107,21 +117,17 @@ public class CourseServiceImpl implements CourseService {
         if (!studentOptional.isPresent()) {
             return new DelistResponse(false, "No such student found.");
         }
-        List<Course> courseList = studentOptional.get().getEnrollments();
-        boolean isCourseEnrolled = false;
-        for (Course a : courseList) {
-            if (a.getId().equals(request.getCourseId())) {
-                isCourseEnrolled = true;
-                break;
-            }
-        }
+        boolean isCourseEnrolled = isCourseEnrolled(request.getCourseId(), studentOptional);
+
         if (!isCourseEnrolled) {
-            return new DelistResponse(false, "Student was not enrolled for course " + courseOptional.get().getName());
+            return new DelistResponse(false, String.format("Student %s is not currently enrolled for %s. It cannot be delisted. "
+                    , studentOptional.get().getName(), courseOptional.get().getName()));
         }
         Student student = studentOptional.get();
         student.removeCourse(courseOptional.get());
         studentRepository.save(student);
-        return new DelistResponse(true, "Student " + studentOptional.get().getName() + " is delisted from course " + courseOptional.get().getName());
+        return new DelistResponse(true, String.format("Student %s is delisted from course %s. "
+                , studentOptional.get().getName(), courseOptional.get().getName()));
     }
 
     @Override
@@ -140,10 +146,10 @@ public class CourseServiceImpl implements CourseService {
 
         if (!existingCoursesByName.isEmpty()) {
             course = existingCoursesByName.get(0);
-            courseResponse.setMessage("Course " + request.getName() + " was updated successfully");
+            courseResponse.setMessage(String.format("Course %s was updated successfully", request.getName()));
         } else {
             course.setName(request.getName());
-            courseResponse.setMessage("Course " + request.getName() + " was created successfully");
+            courseResponse.setMessage(String.format("Course %s was created successfully. ", request.getName()));
         }
 
         Optional<Credit> credit = creditRepository.findById(request.getCreditId());
@@ -161,6 +167,16 @@ public class CourseServiceImpl implements CourseService {
         courseRepository.save(course);
         courseResponse.setCreated(true);
         return courseResponse;
+    }
+
+    private boolean isCourseEnrolled(String courseId, Optional<Student> studentOptional) {
+        List<Course> courseList = studentOptional.get().getEnrollments();
+        for (Course a : courseList) {
+            if (a.getId().equals(courseId)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private static class SortCoursesByEnrollments implements Comparator<CourseDTO> {

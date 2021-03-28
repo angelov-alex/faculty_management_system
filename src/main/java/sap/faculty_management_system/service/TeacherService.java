@@ -9,8 +9,9 @@ import java.util.List;
 public interface TeacherService {
     List<TeacherDTO> getAll();
 
+    TeacherResponse addOrUpdateTeacher(TeacherRequest request);
+
     List<TeacherDTO> getTopTeachers(int number);
 
-    TeacherResponse addTeacher(TeacherRequest request);
-
+    List<TeacherDTO> getTopTeachers();
 }
