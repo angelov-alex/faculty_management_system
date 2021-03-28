@@ -1,13 +1,10 @@
 package sap.faculty_management_system.request;
 
-public class EnrollmentRequest {
-    private String courseId;
-    private String studentId;
+public class DelistRequest {
+    private final String courseId;
+    private final String studentId;
 
-    public EnrollmentRequest() {
-    }
-
-    public EnrollmentRequest(String courseId, String studentId) {
+    public DelistRequest(String courseId, String studentId) {
         this.courseId = courseId;
         this.studentId = studentId;
     }

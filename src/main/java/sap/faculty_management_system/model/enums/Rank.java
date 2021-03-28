@@ -1,8 +1,19 @@
 package sap.faculty_management_system.model.enums;
 
 public enum Rank {
-    PROFESSOR,
-    DOCENT,
-    ASSISTANT,
-    CHIEF_ASSISTANT
+    PROFESSOR("Professor"),
+    DOCENT("Docent"),
+    ASSISTANT("Assistant"),
+    CHIEF_ASSISTANT("Chief assistant");
+
+    private final String value;
+
+    Rank(String value) {
+        this.value = value;
+
+    }
+
+    public String getValue() {
+        return value;
+    }
 }

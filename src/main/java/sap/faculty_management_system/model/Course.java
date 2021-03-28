@@ -83,4 +83,5 @@ public class Course {
     public void setEnrolledStudents(List<Student> enrolledStudents) {
         this.enrolledStudents = enrolledStudents;
     }
+
 }

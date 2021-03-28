@@ -14,16 +14,16 @@ import java.util.stream.Collectors;
 
 @Service
 public class StudentServiceImpl implements StudentService {
-    private final StudentRepository repository;
+    private final StudentRepository studentRepository;
 
-    public StudentServiceImpl(StudentRepository repository) {
-        this.repository = repository;
+    public StudentServiceImpl(StudentRepository studentRepository) {
+        this.studentRepository = studentRepository;
     }
 
     @Override
     public List<StudentDTO> getAll() {
 
-        return repository.findAll().stream().map(DTOConverter::convertStudentToDTO).collect(Collectors.toList());
+        return studentRepository.findAll().stream().map(DTOConverter::convertStudentToDTO).collect(Collectors.toList());
     }
 
     @Override
@@ -35,7 +35,7 @@ public class StudentServiceImpl implements StudentService {
         Student student = new Student();
         student.setName(request.getName());
         student.setAcademicYear(request.getAcademicYear());
-        repository.save(student);
+        studentRepository.save(student);
         return new StudentResponse(true, "Student was created successfully.");
     }
 }

@@ -6,10 +6,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 import sap.faculty_management_system.dto.CourseDTO;
+import sap.faculty_management_system.request.CourseRequest;
+import sap.faculty_management_system.request.DelistRequest;
 import sap.faculty_management_system.request.EnrollmentRequest;
+import sap.faculty_management_system.response.CourseResponse;
+import sap.faculty_management_system.response.DelistResponse;
 import sap.faculty_management_system.response.EnrollmentResponse;
 import sap.faculty_management_system.service.CourseService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -44,6 +49,13 @@ public class CourseController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    @PostMapping
+    public ResponseEntity<CourseResponse> addCourse(@Valid @RequestBody CourseRequest request) {
+
+        CourseResponse response = service.addCourse(request);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     @PostMapping("/enroll")
     public ResponseEntity<EnrollmentResponse> enroll(@RequestBody EnrollmentRequest request) {
 
@@ -56,7 +68,17 @@ public class CourseController {
         }
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-    //TODO: @DeleteMapping("/{id}/delist/student/{id}")
-    //TODO: Create Course
 
+    @DeleteMapping("/delist")
+    public ResponseEntity<DelistResponse> delist(@RequestBody DelistRequest request) {
+
+        if (ObjectUtils.isEmpty(request) || null == request.getCourseId() || null == request.getStudentId()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        DelistResponse response = service.delist(request);
+        if (!response.isDeleted()) {
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }
