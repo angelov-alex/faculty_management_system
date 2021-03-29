@@ -1,7 +1,6 @@
 package sap.faculty_management_system.mockobjects.services;
 
 import org.hamcrest.MatcherAssert;
-import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -14,6 +13,7 @@ import sap.faculty_management_system.request.TeacherRequest;
 import sap.faculty_management_system.response.TeacherResponse;
 import sap.faculty_management_system.service.TeacherService;
 import sap.faculty_management_system.service.TeacherServiceImpl;
+import sap.faculty_management_system.util.Constants;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,7 +29,6 @@ import static sap.faculty_management_system.mockobjects.services.TestHelper.crea
 public class TeacherServiceTests {
 
     private final TeacherRepository teacherRepositoryMock = Mockito.mock(TeacherRepository.class);
-
     private final TeacherService service = new TeacherServiceImpl(teacherRepositoryMock);
 
     @Test
@@ -69,16 +68,16 @@ public class TeacherServiceTests {
 
         //Assert
         MatcherAssert.assertThat(service.addOrUpdateTeacher(null).isCreated(), is(false));
-        MatcherAssert.assertThat(service.addOrUpdateTeacher(null).getMessage(), is("Missing input parameter/s."));
+        MatcherAssert.assertThat(service.addOrUpdateTeacher(null).getMessage(), is(Constants.REQUEST_IS_WRONG));
 
         MatcherAssert.assertThat(service.addOrUpdateTeacher(new TeacherRequest(null, Rank.DOCENT)).isCreated(), is(false));
-        MatcherAssert.assertThat(service.addOrUpdateTeacher(new TeacherRequest(null, Rank.DOCENT)).getMessage(), is("Missing input parameter/s."));
+        MatcherAssert.assertThat(service.addOrUpdateTeacher(new TeacherRequest(null, Rank.DOCENT)).getMessage(), is(Constants.REQUEST_IS_WRONG));
 
         MatcherAssert.assertThat(service.addOrUpdateTeacher(new TeacherRequest("", Rank.DOCENT)).isCreated(), is(false));
-        MatcherAssert.assertThat(service.addOrUpdateTeacher(new TeacherRequest("", Rank.DOCENT)).getMessage(), is("Missing input parameter/s."));
+        MatcherAssert.assertThat(service.addOrUpdateTeacher(new TeacherRequest("", Rank.DOCENT)).getMessage(), is(Constants.REQUEST_IS_WRONG));
 
         MatcherAssert.assertThat(service.addOrUpdateTeacher(new TeacherRequest("Pesho", null)).isCreated(), is(false));
-        MatcherAssert.assertThat(service.addOrUpdateTeacher(new TeacherRequest("Pesho", null)).getMessage(), is("Missing input parameter/s."));
+        MatcherAssert.assertThat(service.addOrUpdateTeacher(new TeacherRequest("Pesho", null)).getMessage(), is(Constants.REQUEST_IS_WRONG));
     }
 
     @Test
@@ -94,8 +93,6 @@ public class TeacherServiceTests {
         MatcherAssert.assertThat(response.getMessage().contains("was created"), is(true));
     }
 
-    //TODO: Fix the logic to update existing teacher.
-    @Ignore
     @Test
     public void addOrUpdateTeacher_shouldUpdateIfTeacherExists() {
         //Arrange

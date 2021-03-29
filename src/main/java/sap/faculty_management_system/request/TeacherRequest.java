@@ -21,4 +21,12 @@ public class TeacherRequest {
     public Rank getRank() {
         return rank;
     }
+
+    @Override
+    public String toString() {
+        return " TeacherRequest{" +
+                "name='" + name + '\'' +
+                ", rank=" + rank +
+                '}';
+    }
 }

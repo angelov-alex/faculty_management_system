@@ -9,6 +9,5 @@ import java.util.List;
 public interface StudentService {
     List<StudentDTO> getAll();
 
-    StudentResponse addStudent(StudentRequest request);
-
+    StudentResponse addOrUpdateStudent(StudentRequest request);
 }

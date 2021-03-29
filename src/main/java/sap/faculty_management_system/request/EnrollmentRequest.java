@@ -19,4 +19,12 @@ public class EnrollmentRequest {
     public String getStudentId() {
         return studentId;
     }
+
+    @Override
+    public String toString() {
+        return " EnrollmentRequest{" +
+                "courseId='" + courseId + '\'' +
+                ", studentId='" + studentId + '\'' +
+                '}';
+    }
 }

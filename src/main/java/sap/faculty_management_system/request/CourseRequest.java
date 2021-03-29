@@ -26,4 +26,13 @@ public class CourseRequest {
     public String getCreditId() {
         return creditId;
     }
+
+    @Override
+    public String toString() {
+        return " CourseRequest{" +
+                "name='" + name + '\'' +
+                ", courseLeaderId='" + courseLeaderId + '\'' +
+                ", creditId='" + creditId + '\'' +
+                '}';
+    }
 }

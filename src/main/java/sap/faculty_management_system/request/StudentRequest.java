@@ -13,4 +13,12 @@ public class StudentRequest {
     public AcademicYear getAcademicYear() {
         return academicYear;
     }
+
+    @Override
+    public String toString() {
+        return " StudentRequest{" +
+                "name='" + name + '\'' +
+                ", academicYear=" + academicYear +
+                '}';
+    }
 }

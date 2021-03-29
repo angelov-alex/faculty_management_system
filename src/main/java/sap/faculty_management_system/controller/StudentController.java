@@ -44,7 +44,7 @@ public class StudentController {
     @PostMapping
     public ResponseEntity<StudentResponse> addStudent(@Valid @RequestBody StudentRequest request) {
         LOGGER.info(Constants.REQUEST_TO_REGISTER_NEW_STUDENT);
-        StudentResponse response = service.addStudent(request);
+        StudentResponse response = service.addOrUpdateStudent(request);
         if (!response.isCreated()) {
             LOGGER.error(response.getMessage());
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);

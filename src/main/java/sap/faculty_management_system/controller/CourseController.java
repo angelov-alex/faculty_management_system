@@ -36,7 +36,7 @@ public class CourseController {
         LOGGER.info(Constants.GETTING_ALL_COURSES);
         List<CourseDTO> result = service.getAll();
         if (result.isEmpty()) {
-            LOGGER.error(Constants.GETTING_ALL_COURSES + Constants.NO_RECORDS_FOUND);
+            LOGGER.warn(Constants.GETTING_ALL_COURSES + Constants.NO_RECORDS_FOUND);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         LOGGER.info(Constants.SUCCESS + Constants.GETTING_ALL_COURSES);
@@ -46,7 +46,7 @@ public class CourseController {
     @PostMapping
     public ResponseEntity<CourseResponse> addCourse(@Valid @RequestBody CourseRequest request) {
         LOGGER.info(Constants.REQUEST_TO_REGISTER_NEW_COURSE);
-        CourseResponse response = service.addCourse(request);
+        CourseResponse response = service.addOrUpdateCourse(request);
 
         if (!response.isCreated()) {
             LOGGER.error(response.getMessage());

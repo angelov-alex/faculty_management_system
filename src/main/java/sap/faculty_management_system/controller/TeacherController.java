@@ -31,7 +31,7 @@ public class TeacherController {
         LOGGER.info(Constants.GETTING_ALL_TEACHERS);
         List<TeacherDTO> result = service.getAll();
         if (result.isEmpty()) {
-            LOGGER.error(Constants.GETTING_ALL_TEACHERS + Constants.NO_RECORDS_FOUND);
+            LOGGER.warn(Constants.GETTING_ALL_TEACHERS + Constants.NO_RECORDS_FOUND);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         LOGGER.info(Constants.SUCCESS + Constants.GETTING_ALL_TEACHERS);
@@ -53,18 +53,18 @@ public class TeacherController {
 
     @GetMapping("/top/{input}")
     public ResponseEntity<List<TeacherDTO>> getTopTeachers(@PathVariable String input) {
-        LOGGER.info(Constants.GETTING_TOP_TEACHERS);
+        LOGGER.info("START {}", Constants.GETTING_TOP_TEACHERS);
         int number;
 
         try {
             number = Integer.parseInt(input);
         } catch (NumberFormatException e) {
-            LOGGER.error(Constants.GETTING_TOP_TEACHERS + Constants.REQUEST_IS_WRONG);
+            LOGGER.error(Constants.GETTING_TOP_TEACHERS + Constants.REQUEST_IS_WRONG + input);
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         List<TeacherDTO> result = service.getTopTeachers(number);
         if (result.isEmpty()) {
-            LOGGER.error(Constants.NO_RECORDS_FOUND);
+            LOGGER.warn(Constants.NO_RECORDS_FOUND);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         LOGGER.info(Constants.SUCCESS + Constants.GETTING_TOP_TEACHERS);

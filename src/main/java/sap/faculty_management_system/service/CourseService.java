@@ -13,13 +13,13 @@ import java.util.List;
 public interface CourseService {
     List<CourseDTO> getAll();
 
-    CourseResponse addCourse(CourseRequest request);
-
-    EnrollmentResponse enroll(EnrollmentRequest request);
-
-    DelistResponse delist(DelistRequest request);
+    CourseResponse addOrUpdateCourse(CourseRequest request);
 
     List<CourseDTO> getTopCourses();
 
     List<CourseDTO> getTopCourses(int number);
+
+    EnrollmentResponse enroll(EnrollmentRequest request);
+
+    DelistResponse delist(DelistRequest request);
 }

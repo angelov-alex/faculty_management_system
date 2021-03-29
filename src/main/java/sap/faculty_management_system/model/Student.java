@@ -41,6 +41,10 @@ public class Student {
         return id;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
     }
@@ -72,4 +76,5 @@ public class Student {
     public void removeCourse(Course course) {
         this.enrollments.remove(course);
     }
+
 }

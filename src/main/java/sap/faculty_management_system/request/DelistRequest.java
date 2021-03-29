@@ -16,4 +16,12 @@ public class DelistRequest {
     public String getStudentId() {
         return studentId;
     }
+
+    @Override
+    public String toString() {
+        return " DelistRequest{" +
+                "courseId='" + courseId + '\'' +
+                ", studentId='" + studentId + '\'' +
+                '}';
+    }
 }
