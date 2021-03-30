@@ -20,6 +20,10 @@ import sap.faculty_management_system.util.Constants;
 import javax.validation.Valid;
 import java.util.List;
 
+
+/**
+ * Includes all methods related to courses including enrollments, delist
+ */
 @Controller
 @RequestMapping("/api/courses")
 public class CourseController {
@@ -31,6 +35,11 @@ public class CourseController {
         this.service = service;
     }
 
+    /**
+     * Request to list all existing courses
+     *
+     * @return List of CourseDTOs with course ID, name, credits and total enrollments
+     */
     @GetMapping
     public ResponseEntity<List<CourseDTO>> getAllCourses() {
         LOGGER.info(Constants.GETTING_ALL_COURSES);
@@ -43,8 +52,14 @@ public class CourseController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    /**
+     * Adds new course or update existing one.
+     *
+     * @param request contains name of course, courseLeaderId and creditId
+     * @return CourseResponse that holds boolean that is true in success and false and error message in case of failure.
+     */
     @PostMapping
-    public ResponseEntity<CourseResponse> addCourse(@Valid @RequestBody CourseRequest request) {
+    public ResponseEntity<CourseResponse> addOrUpdateCourse(@Valid @RequestBody CourseRequest request) {
         LOGGER.info(Constants.REQUEST_TO_REGISTER_NEW_COURSE);
         CourseResponse response = service.addOrUpdateCourse(request);
 
@@ -56,6 +71,31 @@ public class CourseController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    /**
+     * Request to get all courses sorted by total enrollments listed from top to bottom.
+     *
+     * @return Returns all courses sorted by total enrollments from top to bottom
+     */
+    @GetMapping("/top")
+    public ResponseEntity<List<CourseDTO>> getTopCourses() {
+
+        LOGGER.info(Constants.GETTING_TOP_COURSES);
+
+        List<CourseDTO> result = service.getTopCourses();
+        if (result.isEmpty()) {
+            LOGGER.error(Constants.NO_RECORDS_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        LOGGER.info(Constants.SUCCESS + Constants.GETTING_TOP_COURSES);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    /**
+     * Request to get top N courses based on the user input.
+     *
+     * @param input Number of top courses to be displayed.
+     * @return Returns a specific number of courses sorted by total enrollments from top to bottom (ex. top 3 courses)
+     */
     @GetMapping("/top/{input}")
     public ResponseEntity<List<CourseDTO>> getTopCourses(@PathVariable String input) {
 
@@ -77,20 +117,12 @@ public class CourseController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @GetMapping("/top")
-    public ResponseEntity<List<CourseDTO>> getTopCourses() {
-
-        LOGGER.info(Constants.GETTING_TOP_COURSES);
-
-        List<CourseDTO> result = service.getTopCourses();
-        if (result.isEmpty()) {
-            LOGGER.error(Constants.NO_RECORDS_FOUND);
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        LOGGER.info(Constants.SUCCESS + Constants.GETTING_TOP_COURSES);
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-
+    /**
+     * Request to enroll a specific student into a specified course.
+     *
+     * @param request CourseId and StudentId
+     * @return ResponseEntity with the respective HTTP status.
+     */
     @PostMapping("/enroll")
     public ResponseEntity<EnrollmentResponse> enroll(@RequestBody EnrollmentRequest request) {
         LOGGER.info(Constants.REQUEST_ENROLL_STUDENT_INTO_COURSE);
@@ -108,6 +140,12 @@ public class CourseController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    /**
+     * Delete request to delist a specific student from a specified course.
+     *
+     * @param request CourseId and StudentId
+     * @return ResponseEntity with the respective HTTP status.
+     */
     @DeleteMapping("/delist")
     public ResponseEntity<DelistResponse> delist(@RequestBody DelistRequest request) {
         LOGGER.info(Constants.REQUEST_DELIST_STUDENT_FROM_COURSE);

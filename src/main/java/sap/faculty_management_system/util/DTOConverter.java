@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class DTOConverter {
+
     public static CourseDTO convertCourseToDTO(Course course) {
         if (ObjectUtils.isEmpty(course)) {
             return null;
@@ -50,10 +51,6 @@ public class DTOConverter {
 
         return teacherDTO;
     }
-
-//    public static TeacherDTO2 convertTeacherReportToDTO(TeacherDTO teacherDTO) {
-//        return new TeacherDTO2(teacherDTO.getName(), teacherDTO.getRank(), teacherDTO.getTotalNumOfLeadCourses());
-//    }
 
     public static StudentDTO convertStudentToDTO(Student student) {
         if (ObjectUtils.isEmpty(student)) {

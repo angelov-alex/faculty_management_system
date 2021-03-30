@@ -6,6 +6,14 @@ public class StudentRequest {
     private String name;
     private AcademicYear academicYear;
 
+    public StudentRequest() {
+    }
+
+    public StudentRequest(String name, AcademicYear academicYear) {
+        this.name = name;
+        this.academicYear = academicYear;
+    }
+
     public String getName() {
         return name;
     }

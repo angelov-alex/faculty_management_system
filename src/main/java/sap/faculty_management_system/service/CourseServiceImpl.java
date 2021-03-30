@@ -2,6 +2,7 @@ package sap.faculty_management_system.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import sap.faculty_management_system.dto.CourseDTO;
@@ -43,12 +44,25 @@ public class CourseServiceImpl implements CourseService {
         this.creditRepository = creditRepository;
     }
 
+    /**
+     * Returns all courses in the database sorted alphabetically.
+     *
+     * @return List of all courses mapped to DTO
+     */
     @Override
     public List<CourseDTO> getAll() {
-        return courseRepository.findAll().stream()
-                .map(DTOConverter::convertCourseToDTO).collect(Collectors.toList());
+        return courseRepository.findAll(Sort.by(Sort.Direction.ASC, "name"))
+                .stream()
+                .map(DTOConverter::convertCourseToDTO)
+                .collect(Collectors.toList());
     }
 
+    /**
+     * Add new course in the database. If existing, it updates its properties: Course Leader or Credit Hours
+     *
+     * @param request course name, course leader Id and course credit Id
+     * @return CourseResponse with boolean if it was created/updated and a message
+     */
     @Override
     public CourseResponse addOrUpdateCourse(CourseRequest request) {
         LOGGER.trace("START {}", request);
@@ -58,7 +72,7 @@ public class CourseServiceImpl implements CourseService {
                 || request.getCourseLeaderId() == null
                 || request.getCreditId() == null
                 || request.getName().isEmpty()) {
-            LOGGER.error(Constants.REQUEST_IS_WRONG + request.toString());
+            LOGGER.error(Constants.REQUEST_IS_WRONG + (request == null ? "Null" : request.toString()));
             return new CourseResponse(false, Constants.REQUEST_IS_WRONG);
         }
 
@@ -92,6 +106,11 @@ public class CourseServiceImpl implements CourseService {
         return courseResponse;
     }
 
+    /**
+     * Returns all courses sorted by total enrollments from top to bottom
+     *
+     * @return List of all courses converted in DTO
+     */
     @Override
     public List<CourseDTO> getTopCourses() {
         List<CourseDTO> courseDTOList = courseRepository.findAll()
@@ -102,6 +121,12 @@ public class CourseServiceImpl implements CourseService {
         return courseDTOList.stream().sorted(new SortCoursesByEnrollments()).collect(Collectors.toList());
     }
 
+    /**
+     * Returns a specific number of courses sorted by total enrollments from top to bottom (ex. top 3 courses)
+     *
+     * @param number Number of desired courses to be displayed
+     * @return List of all courses converted in DTO
+     */
     @Override
     public List<CourseDTO> getTopCourses(int number) {
         List<CourseDTO> courseDTOList = courseRepository.findAll()
@@ -112,6 +137,12 @@ public class CourseServiceImpl implements CourseService {
         return courseDTOList.stream().sorted(new SortCoursesByEnrollments()).limit(number).collect(Collectors.toList());
     }
 
+    /**
+     * Enroll a specific student in a specified course.
+     *
+     * @param request CourseId and StudentId
+     * @return EnrollmentResponse with boolean if it was enrolled and an error message
+     */
     @Override
     public EnrollmentResponse enroll(EnrollmentRequest request) {
 
@@ -121,7 +152,7 @@ public class CourseServiceImpl implements CourseService {
                 || request.getStudentId() == null
                 || request.getCourseId().isEmpty()
                 || request.getStudentId().isEmpty()) {
-            LOGGER.error(Constants.REQUEST_IS_WRONG + request.toString());
+            LOGGER.error(Constants.REQUEST_IS_WRONG + (request == null ? "Null" : request.toString()));
             return new EnrollmentResponse(false, Constants.REQUEST_IS_WRONG);
         }
         Optional<Course> courseOptional = courseRepository.findById(request.getCourseId());
@@ -149,6 +180,12 @@ public class CourseServiceImpl implements CourseService {
                 , student.getName(), courseOptional.get().getName()));
     }
 
+    /**
+     * Delist specific student from a specified course.
+     *
+     * @param request CourseId and StudentId
+     * @return DelistResponse with boolean if it was delisted and an error message
+     */
     @Override
     public DelistResponse delist(DelistRequest request) {
         LOGGER.trace("START {}", request);
@@ -157,7 +194,7 @@ public class CourseServiceImpl implements CourseService {
                 || request.getStudentId() == null
                 || request.getCourseId().isEmpty()
                 || request.getStudentId().isEmpty()) {
-            LOGGER.error(Constants.REQUEST_IS_WRONG + request.toString());
+            LOGGER.error(Constants.REQUEST_IS_WRONG + (request == null ? "Null" : request.toString()));
             return new DelistResponse(false, Constants.REQUEST_IS_WRONG);
         }
 
@@ -186,6 +223,13 @@ public class CourseServiceImpl implements CourseService {
                 , studentOptional.get().getName(), courseOptional.get().getName()));
     }
 
+    /**
+     * Check if certain student is enrolled in a specific course.
+     *
+     * @param courseId
+     * @param studentOptional
+     * @return boolean if the student was enrolled and a message
+     */
     private boolean isCourseEnrolled(String courseId, Optional<Student> studentOptional) {
         List<Course> courseList = studentOptional.get().getEnrollments();
         for (Course a : courseList) {
@@ -197,12 +241,19 @@ public class CourseServiceImpl implements CourseService {
     }
 
     private static class SortCoursesByEnrollments implements Comparator<CourseDTO> {
+        /**
+         * Compare two specific courses by the total enrolled students in each one.
+         *
+         * @param courseDTO1
+         * @param courseDTO2
+         * @return An int value with -1 if the first course has more students, 1 if the second course has more students and 0 if they are equal
+         */
         @Override
-        public int compare(CourseDTO o1, CourseDTO o2) {
-            if (o1.getTotalEnrollments() == o2.getTotalEnrollments()) {
+        public int compare(CourseDTO courseDTO1, CourseDTO courseDTO2) {
+            if (courseDTO1.getTotalEnrollments() == courseDTO2.getTotalEnrollments()) {
                 return 0;
             }
-            return o1.getTotalEnrollments() > o2.getTotalEnrollments() ? -1 : 1;
+            return courseDTO1.getTotalEnrollments() > courseDTO2.getTotalEnrollments() ? -1 : 1;
         }
     }
 }

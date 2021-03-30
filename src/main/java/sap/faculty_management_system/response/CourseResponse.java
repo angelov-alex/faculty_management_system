@@ -27,4 +27,5 @@ public class CourseResponse {
     public void setMessage(String message) {
         this.message = message;
     }
+
 }

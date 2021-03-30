@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "TEACHER", schema = "SAP")
-public class Teacher {
+public class Teacher implements User {
 
     @Id
     @GeneratedValue(generator = "uuid")

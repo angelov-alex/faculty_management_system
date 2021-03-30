@@ -4,7 +4,7 @@ public class Constants {
 
     // General
     public static final String SPACE = " ";
-    public static final String SUCCESS = "Success:";
+    public static final String SUCCESS = "Success: ";
     public static final String NO_RECORDS_FOUND = "No records found.";
     public static final String REQUEST_IS_WRONG = "Request is empty or there is a missing or wrong parameter.";
 
@@ -28,6 +28,7 @@ public class Constants {
     public static final String REQUEST_TO_REGISTER_NEW_STUDENT = "Request to register new student.";
     public static final String NO_SUCH_S_FOUND = "No such %s found.";
 
-    // Credit
+    // Others
     public static final String CREDIT = "credit";
+    public static final String GETTING_ALL_USERS = "Getting all users!";
 }

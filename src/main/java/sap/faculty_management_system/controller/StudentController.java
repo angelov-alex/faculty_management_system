@@ -18,6 +18,9 @@ import sap.faculty_management_system.util.Constants;
 import javax.validation.Valid;
 import java.util.List;
 
+/**
+ * Includes methods related to students
+ */
 @Controller
 @RequestMapping("/api/students")
 public class StudentController {
@@ -29,6 +32,11 @@ public class StudentController {
         this.service = service;
     }
 
+    /**
+     * Request to list all existing students
+     *
+     * @return List of StudentDTO with student ID, name, academicYear and all enrollments
+     */
     @GetMapping
     public ResponseEntity<List<StudentDTO>> getAllStudents() {
         LOGGER.info(Constants.GETTING_ALL_STUDENTS);
@@ -41,8 +49,14 @@ public class StudentController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    /**
+     * Add new student in the database. If existing, it updates its properties: Student academic year
+     *
+     * @param request Student name and Academic Year
+     * @return CourseResponse that holds boolean that is true in success and false and error message in case of failure.
+     */
     @PostMapping
-    public ResponseEntity<StudentResponse> addStudent(@Valid @RequestBody StudentRequest request) {
+    public ResponseEntity<StudentResponse> addOrUpdateStudent(@Valid @RequestBody StudentRequest request) {
         LOGGER.info(Constants.REQUEST_TO_REGISTER_NEW_STUDENT);
         StudentResponse response = service.addOrUpdateStudent(request);
         if (!response.isCreated()) {

@@ -15,6 +15,9 @@ import sap.faculty_management_system.util.Constants;
 import javax.validation.Valid;
 import java.util.List;
 
+/**
+ * Includes all methods related to teachers
+ */
 @Controller
 @RequestMapping("/api/teachers")
 public class TeacherController {
@@ -26,6 +29,11 @@ public class TeacherController {
         this.service = service;
     }
 
+    /**
+     * Request to list all existing teachers
+     *
+     * @return List of TeacherDTO with teacher ID, name, rank and lead courses
+     */
     @GetMapping
     public ResponseEntity<List<TeacherDTO>> getAllTeachers() {
         LOGGER.info(Constants.GETTING_ALL_TEACHERS);
@@ -38,8 +46,14 @@ public class TeacherController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    /**
+     * Adds new teacher or update existing one.
+     *
+     * @param request contains name of teacher and its rank
+     * @return TeacherResponse that holds boolean that is true in success and false and error message in case of failure.
+     */
     @PostMapping
-    public ResponseEntity<TeacherResponse> addTeacher(@Valid @RequestBody TeacherRequest request) {
+    public ResponseEntity<TeacherResponse> addOrUpdateTeacher(@Valid @RequestBody TeacherRequest request) {
         LOGGER.info(Constants.REQUEST_TO_REGISTER_NEW_TEACHER);
         TeacherResponse response = service.addOrUpdateTeacher(request);
 
@@ -51,6 +65,31 @@ public class TeacherController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    /**
+     * Request to get all teachers sorted by total number of students in the courses they lead from top to bottom.
+     *
+     * @return Returns all teachers sorted by total number of students
+     */
+    @GetMapping("/top")
+    public ResponseEntity<List<TeacherDTO>> getTopTeachers() {
+        LOGGER.info(Constants.GETTING_TOP_TEACHERS);
+        int number;
+
+        List<TeacherDTO> result = service.getTopTeachers();
+        if (result.isEmpty()) {
+            LOGGER.error(Constants.NO_RECORDS_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        LOGGER.info(Constants.SUCCESS + Constants.GETTING_TOP_TEACHERS);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    /**
+     * Request to get top N teachers based on the user input.
+     *
+     * @param input Number of top teachers to be displayed.
+     * @return Returns a specific number of teachers sorted by total students in their courses from top to bottom (ex. top 3 courses)
+     */
     @GetMapping("/top/{input}")
     public ResponseEntity<List<TeacherDTO>> getTopTeachers(@PathVariable String input) {
         LOGGER.info("START {}", Constants.GETTING_TOP_TEACHERS);
@@ -71,24 +110,5 @@ public class TeacherController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @GetMapping("/top")
-    public ResponseEntity<List<TeacherDTO>> getTopTeachers() {
-        LOGGER.info(Constants.GETTING_TOP_TEACHERS);
-        int number;
-
-        List<TeacherDTO> result = service.getTopTeachers();
-        if (result.isEmpty()) {
-            LOGGER.error(Constants.NO_RECORDS_FOUND);
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        LOGGER.info(Constants.SUCCESS + Constants.GETTING_TOP_TEACHERS);
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-//    //TODO: fix the method (probably will not be used)
-//    @GetMapping("/query")
-//    public ResponseEntity<List<TeacherDTO2>> getQuery1() {
-//        List<TeacherDTO2> result = service.getTopTeachers().stream().map(a -> convertTeacherReportToDTO(a)).collect(Collectors.toList());
-//        return new ResponseEntity<>(result, HttpStatus.OK);
-//    }
 }
 

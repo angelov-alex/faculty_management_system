@@ -2,12 +2,13 @@ package sap.faculty_management_system.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import sap.faculty_management_system.model.User;
 
 import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
-public class StudentDTO {
+public class StudentDTO implements User {
 
     private String id;
 

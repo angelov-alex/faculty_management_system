@@ -2,6 +2,7 @@ package sap.faculty_management_system.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import sap.faculty_management_system.dto.StudentDTO;
@@ -24,11 +25,25 @@ public class StudentServiceImpl implements StudentService {
         this.studentRepository = studentRepository;
     }
 
+    /**
+     * The method returns all Students in the database sorted alphabetically.
+     *
+     * @return List of all students converted in DTO
+     */
     @Override
     public List<StudentDTO> getAll() {
-        return studentRepository.findAll().stream().map(DTOConverter::convertStudentToDTO).collect(Collectors.toList());
+        return studentRepository.findAll(Sort.by(Sort.Direction.ASC, "name"))
+                .stream()
+                .map(DTOConverter::convertStudentToDTO)
+                .collect(Collectors.toList());
     }
 
+    /**
+     * Add new student in the database. If existing, it updates its properties: Academic year
+     *
+     * @param request
+     * @return StudentResponse with boolean if it was created/updated and a message
+     */
     @Override
     public StudentResponse addOrUpdateStudent(StudentRequest request) {
         LOGGER.trace("START {}", request);
@@ -37,7 +52,7 @@ public class StudentServiceImpl implements StudentService {
                 || request.getName() == null
                 || request.getAcademicYear() == null
                 || request.getName().isEmpty()) {
-            LOGGER.error(Constants.REQUEST_IS_WRONG + request.toString());
+            LOGGER.error(Constants.REQUEST_IS_WRONG + (request == null ? "Null" : request.toString()));
             return new StudentResponse(false, Constants.REQUEST_IS_WRONG);
         }
         List<Student> existingStudentsByName = studentRepository.findAllByName(request.getName());

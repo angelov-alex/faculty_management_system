@@ -2,6 +2,7 @@ package sap.faculty_management_system.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import sap.faculty_management_system.dto.TeacherDTO;
@@ -25,11 +26,25 @@ public class TeacherServiceImpl implements TeacherService {
         this.teacherRepository = teacherRepository;
     }
 
+    /**
+     * The method returns all teachers in the database sorted alphabetically.
+     *
+     * @return List of all teachers converted in DTO
+     */
     @Override
     public List<TeacherDTO> getAll() {
-        return teacherRepository.findAll().stream().map(DTOConverter::convertTeacherToDTO).collect(Collectors.toList());
+        return teacherRepository.findAll(Sort.by(Sort.Direction.ASC, "name"))
+                .stream()
+                .map(DTOConverter::convertTeacherToDTO)
+                .collect(Collectors.toList());
     }
 
+    /**
+     * Add new teacher in the database. If existing, it updates its properties: Rank
+     *
+     * @param request
+     * @return TeacherResponse with boolean if it was created/updated and a message
+     */
     @Override
     public TeacherResponse addOrUpdateTeacher(TeacherRequest request) {
         LOGGER.trace("START {}", request);
@@ -38,7 +53,7 @@ public class TeacherServiceImpl implements TeacherService {
                 || request.getName() == null
                 || request.getRank() == null
                 || request.getName().isEmpty()) {
-            LOGGER.error(Constants.REQUEST_IS_WRONG + request.toString());
+            LOGGER.error(Constants.REQUEST_IS_WRONG + (request == null ? "Null" : request.toString()));
             return new TeacherResponse(false, Constants.REQUEST_IS_WRONG);
         }
 
@@ -59,6 +74,11 @@ public class TeacherServiceImpl implements TeacherService {
         return teacherResponse;
     }
 
+    /**
+     * Return all teachers sorted by total assigned students in its courses from top to bottom
+     *
+     * @return List of all teachers converted in DTO
+     */
     @Override
     public List<TeacherDTO> getTopTeachers() {
         List<TeacherDTO> teacherDTOList = teacherRepository.findAll().stream().map(DTOConverter::convertTeacherToDTO).collect(Collectors.toList());
@@ -66,6 +86,12 @@ public class TeacherServiceImpl implements TeacherService {
         return teacherDTOList.stream().sorted(new SortTeachersByNumOfStudents()).collect(Collectors.toList());
     }
 
+    /**
+     * Return a specific number of teachers sorted by total assigned students in its courses from top to bottom (ex. top 3 teachers)
+     *
+     * @param number
+     * @return List of all teachers converted in DTO
+     */
     @Override
     public List<TeacherDTO> getTopTeachers(int number) {
         List<TeacherDTO> teacherDTOList = teacherRepository.findAll().stream().map(DTOConverter::convertTeacherToDTO).collect(Collectors.toList());
@@ -74,12 +100,19 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     private static class SortTeachersByNumOfStudents implements Comparator<TeacherDTO> {
+        /**
+         * Compare two specific teachers by the total enrolled students in the courses they lead.
+         *
+         * @param teacherDTO1
+         * @param teacherDTO2
+         * @return An int value with -1 if the first teacher has more students, 1 if the second teacher has more students and 0 if they are equal
+         */
         @Override
-        public int compare(TeacherDTO o1, TeacherDTO o2) {
-            if (o1.getTotalNumOfStudents() == o2.getTotalNumOfStudents()) {
+        public int compare(TeacherDTO teacherDTO1, TeacherDTO teacherDTO2) {
+            if (teacherDTO1.getTotalNumOfStudents() == teacherDTO2.getTotalNumOfStudents()) {
                 return 0;
             }
-            return o1.getTotalNumOfStudents() > o2.getTotalNumOfStudents() ? -1 : 1;
+            return teacherDTO1.getTotalNumOfStudents() > teacherDTO2.getTotalNumOfStudents() ? -1 : 1;
         }
     }
 }

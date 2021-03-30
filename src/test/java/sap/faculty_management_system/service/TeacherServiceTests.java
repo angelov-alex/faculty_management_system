@@ -1,18 +1,17 @@
-package sap.faculty_management_system.mockobjects.services;
+package sap.faculty_management_system.service;
 
 import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit4.SpringRunner;
 import sap.faculty_management_system.dto.TeacherDTO;
 import sap.faculty_management_system.model.enums.Rank;
 import sap.faculty_management_system.repository.TeacherRepository;
 import sap.faculty_management_system.request.TeacherRequest;
 import sap.faculty_management_system.response.TeacherResponse;
-import sap.faculty_management_system.service.TeacherService;
-import sap.faculty_management_system.service.TeacherServiceImpl;
 import sap.faculty_management_system.util.Constants;
 
 import java.util.ArrayList;
@@ -21,8 +20,8 @@ import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.Mockito.when;
-import static sap.faculty_management_system.mockobjects.services.TestHelper.createListOfOneTeacher;
-import static sap.faculty_management_system.mockobjects.services.TestHelper.createListOfTwoTeachers;
+import static sap.faculty_management_system.service.TestHelper.createListOfOneTeacher;
+import static sap.faculty_management_system.service.TestHelper.createListOfTwoTeachers;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -47,7 +46,7 @@ public class TeacherServiceTests {
     @Test
     public void getAll_shouldReturnList() {
         //Arrange
-        when(teacherRepositoryMock.findAll()).thenReturn(createListOfTwoTeachers());
+        when(teacherRepositoryMock.findAll(Sort.by(Sort.Direction.ASC, "name"))).thenReturn(createListOfTwoTeachers());
 
         //Act
         List<TeacherDTO> result = service.getAll();
