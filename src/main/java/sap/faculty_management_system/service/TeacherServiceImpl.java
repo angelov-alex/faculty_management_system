@@ -6,6 +6,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import sap.faculty_management_system.dto.TeacherDTO;
+import sap.faculty_management_system.model.Course;
 import sap.faculty_management_system.model.Teacher;
 import sap.faculty_management_system.repository.TeacherRepository;
 import sap.faculty_management_system.request.TeacherRequest;
@@ -13,6 +14,7 @@ import sap.faculty_management_system.response.TeacherResponse;
 import sap.faculty_management_system.util.Constants;
 import sap.faculty_management_system.util.DTOConverter;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -114,5 +116,32 @@ public class TeacherServiceImpl implements TeacherService {
             }
             return teacherDTO1.getTotalNumOfStudents() > teacherDTO2.getTotalNumOfStudents() ? -1 : 1;
         }
+    }
+
+    /**
+     * Exports all teachers leading more than one course with more than 5 students in total.
+     *
+     * @return List of TeacherDTO sorted by total number of students matching the criteria for the number of courses lead and students
+     */
+    public List<TeacherDTO> teacherListReport() {
+        List<Teacher> teacherListLeadingMoreThan2Courses = teacherRepository.findAll()
+                .stream()
+                .filter(t -> t.getLeadCourses().size() > 1)
+                .collect(Collectors.toList());
+        List<Teacher> result = new ArrayList<>();
+        int currentNumStudents = 0;
+
+        for (int i = 0; i < teacherListLeadingMoreThan2Courses.size(); i++) {
+            Teacher currentTeacher = teacherListLeadingMoreThan2Courses.get(i);
+            List<Course> currentTeacherLeadCourses = currentTeacher.getLeadCourses();
+            for (int j = 0; j < currentTeacherLeadCourses.size(); j++) {
+                currentNumStudents += currentTeacherLeadCourses.get(j).getEnrolledStudents().size();
+            }
+            if (currentNumStudents >= 2) {
+                result.add(currentTeacher);
+                currentNumStudents = 0;
+            }
+        }
+        return result.stream().map(DTOConverter::convertTeacherToDTO).sorted(new SortTeachersByNumOfStudents()).collect(Collectors.toList());
     }
 }

@@ -110,5 +110,21 @@ public class TeacherController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    /**
+     * Request to get all teachers leading more than 1 course with more than 5 students in total.
+     *
+     * @return Returns a list of teachers sorted by total students in their courses from top to bottom
+     */
+    @GetMapping("/report")
+    public ResponseEntity<List<TeacherDTO>> getTeacherSpecificReport() {
+        List<TeacherDTO> result = service.teacherListReport();
+        if (result.isEmpty()) {
+            LOGGER.warn(Constants.GETTING_ALL_TEACHERS + Constants.NO_RECORDS_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        LOGGER.info(Constants.SUCCESS + Constants.GETTING_ALL_TEACHERS);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
 }
 

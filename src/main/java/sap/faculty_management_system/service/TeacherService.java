@@ -12,4 +12,6 @@ public interface TeacherService {
     List<TeacherDTO> getTopTeachers();
 
     List<TeacherDTO> getTopTeachers(int number);
+
+    List<TeacherDTO> teacherListReport();
 }

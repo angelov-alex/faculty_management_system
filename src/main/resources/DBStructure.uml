@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>Persistence</ID>
+  <OriginalElement>JavaeeElement:/7d07cf7d/entityManagerFactory/faculty_management_system.main/jpa/JPA/PersistenceModel</OriginalElement>
+  <nodes>
+    <node x="0.0" y="373.0">AbstractAuditable#jar:///Users/alexanderangelov/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-jpa/2.4.5/73596ed30853bf9338fd8358ec804f0097b6d73b/spring-data-jpa-2.4.5.jar!/org/springframework/data/jpa/domain/AbstractAuditable.class</node>
+    <node x="166.50000000000003" y="148.0">Course#file:///Users/alexanderangelov/DEV PROJECTS/faculty_management_system/src/main/java/sap/faculty_management_system/model/Course.java</node>
+    <node x="0.0" y="0.0">Teacher#file:///Users/alexanderangelov/DEV PROJECTS/faculty_management_system/src/main/java/sap/faculty_management_system/model/Teacher.java</node>
+    <node x="333.0" y="0.0">Student#file:///Users/alexanderangelov/DEV PROJECTS/faculty_management_system/src/main/java/sap/faculty_management_system/model/Student.java</node>
+    <node x="142.0" y="11.0">Credit#file:///Users/alexanderangelov/DEV PROJECTS/faculty_management_system/src/main/java/sap/faculty_management_system/model/Credit.java</node>
+    <node x="64.25" y="269.0">AbstractPersistable#jar:///Users/alexanderangelov/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-jpa/2.4.5/73596ed30853bf9338fd8358ec804f0097b6d73b/spring-data-jpa-2.4.5.jar!/org/springframework/data/jpa/domain/AbstractPersistable.class</node>
+    <node x="30.25" y="281.0">null#null</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="Course#file:///Users/alexanderangelov/DEV PROJECTS/faculty_management_system/src/main/java/sap/faculty_management_system/model/Course.java" target="Credit#file:///Users/alexanderangelov/DEV PROJECTS/faculty_management_system/src/main/java/sap/faculty_management_system/model/Credit.java">
+      <point x="-2.8421709430404007E-14" y="-38.0" />
+      <point x="0.0" y="38.0" />
+    </edge>
+    <edge source="Course#file:///Users/alexanderangelov/DEV PROJECTS/faculty_management_system/src/main/java/sap/faculty_management_system/model/Course.java" target="Student#file:///Users/alexanderangelov/DEV PROJECTS/faculty_management_system/src/main/java/sap/faculty_management_system/model/Student.java">
+      <point x="24.399999999999977" y="-38.0" />
+      <point x="251.9" y="118.0" />
+      <point x="390.25" y="118.0" />
+      <point x="-57.25" y="49.0" />
+    </edge>
+    <edge source="Teacher#file:///Users/alexanderangelov/DEV PROJECTS/faculty_management_system/src/main/java/sap/faculty_management_system/model/Teacher.java" target="Course#file:///Users/alexanderangelov/DEV PROJECTS/faculty_management_system/src/main/java/sap/faculty_management_system/model/Course.java">
+      <point x="30.5" y="49.0" />
+      <point x="91.5" y="118.0" />
+      <point x="203.1" y="118.0" />
+      <point x="-24.400000000000034" y="-38.0" />
+    </edge>
+    <edge source="AbstractAuditable#jar:///Users/alexanderangelov/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-jpa/2.4.5/73596ed30853bf9338fd8358ec804f0097b6d73b/spring-data-jpa-2.4.5.jar!/org/springframework/data/jpa/domain/AbstractAuditable.class" target="null#null">
+      <point x="-48.0" y="-38.0" />
+      <point x="48.0" y="348.0" />
+      <point x="37.25" y="348.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="Course#file:///Users/alexanderangelov/DEV PROJECTS/faculty_management_system/src/main/java/sap/faculty_management_system/model/Course.java" target="Teacher#file:///Users/alexanderangelov/DEV PROJECTS/faculty_management_system/src/main/java/sap/faculty_management_system/model/Teacher.java">
+      <point x="-48.80000000000004" y="-38.0" />
+      <point x="178.7" y="128.0" />
+      <point x="30.5" y="128.0" />
+      <point x="-30.5" y="49.0" />
+    </edge>
+    <edge source="Student#file:///Users/alexanderangelov/DEV PROJECTS/faculty_management_system/src/main/java/sap/faculty_management_system/model/Student.java" target="Course#file:///Users/alexanderangelov/DEV PROJECTS/faculty_management_system/src/main/java/sap/faculty_management_system/model/Course.java">
+      <point x="57.25" y="49.0" />
+      <point x="504.75" y="128.0" />
+      <point x="276.3" y="128.0" />
+      <point x="48.79999999999998" y="-38.0" />
+    </edge>
+    <edge source="AbstractAuditable#jar:///Users/alexanderangelov/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-jpa/2.4.5/73596ed30853bf9338fd8358ec804f0097b6d73b/spring-data-jpa-2.4.5.jar!/org/springframework/data/jpa/domain/AbstractAuditable.class" target="AbstractPersistable#jar:///Users/alexanderangelov/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-jpa/2.4.5/73596ed30853bf9338fd8358ec804f0097b6d73b/spring-data-jpa-2.4.5.jar!/org/springframework/data/jpa/domain/AbstractPersistable.class">
+      <point x="48.0" y="-38.0" />
+      <point x="144.0" y="348.0" />
+      <point x="154.75" y="348.0" />
+      <point x="0.0" y="27.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="281.0" y="224.5" />
+  <SelectedNodes>
+    <node>AbstractAuditable#jar:///Users/alexanderangelov/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-jpa/2.4.5/73596ed30853bf9338fd8358ec804f0097b6d73b/spring-data-jpa-2.4.5.jar!/org/springframework/data/jpa/domain/AbstractAuditable.class</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Properties</Category>
+    <Category>Embeddables</Category>
+    <Category>Superclasses</Category>
+  </Categories>
+</Diagram>
+
