@@ -2,11 +2,12 @@ package sap.facultymanagementsystem.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import sap.facultymanagementsystem.dto.StudentDTO;
 import sap.facultymanagementsystem.dto.TeacherDTO;
 import sap.facultymanagementsystem.model.User;
@@ -20,13 +21,14 @@ import java.util.List;
 /**
  * Includes all methods related to faculty members - all users both teachers and students
  */
-@Controller
+@RestController
 @RequestMapping("/api/users")
 public class UserController {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
     private final TeacherService teacherService;
     private final StudentService studentService;
 
+    @Autowired
     public UserController(TeacherService teacherService, StudentService studentService) {
         this.teacherService = teacherService;
         this.studentService = studentService;

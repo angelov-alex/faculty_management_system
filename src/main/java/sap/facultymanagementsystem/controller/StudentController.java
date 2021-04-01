@@ -2,13 +2,10 @@ package sap.facultymanagementsystem.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import sap.facultymanagementsystem.dto.StudentDTO;
 import sap.facultymanagementsystem.request.StudentRequest;
 import sap.facultymanagementsystem.response.StudentResponse;
@@ -21,13 +18,14 @@ import java.util.List;
 /**
  * Includes methods related to students
  */
-@Controller
+@RestController
 @RequestMapping("/api/students")
 public class StudentController {
     private static final Logger LOGGER = LoggerFactory.getLogger(StudentController.class);
 
     private final StudentService service;
 
+    @Autowired
     public StudentController(StudentService service) {
         this.service = service;
     }

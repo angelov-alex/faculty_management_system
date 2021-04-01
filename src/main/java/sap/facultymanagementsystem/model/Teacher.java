@@ -1,7 +1,5 @@
 package sap.facultymanagementsystem.model;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 import sap.facultymanagementsystem.model.enums.Rank;
 
@@ -10,8 +8,6 @@ import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "TEACHER", schema = "SAP")
 public class Teacher implements User {
